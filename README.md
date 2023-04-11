@@ -4,6 +4,7 @@
 * [Main parameter](#main-parameter)
 * [Template](#template)
 * [Algorithm](#algorithm)
+* [Variant](#variant)
 * [Continuity](#continuity)
 * [FBM](#fbm)
 * [My Social Media](#my-social-media)
