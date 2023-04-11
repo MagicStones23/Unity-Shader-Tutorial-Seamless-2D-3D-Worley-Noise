@@ -10,7 +10,7 @@
 
 # How to use
 
-This project was created in Unity2022.2 
+This project was created in Unity2021.3 
 
 Click Generate to create noise texture
 
@@ -47,6 +47,14 @@ Tip: 3D noise texture takes up a lot of memory and GPU resources, resolution sho
 ### Default 2D
 
 ![示例 默认2D](https://user-images.githubusercontent.com/129722386/231022787-be307d67-f464-4429-9a7b-7477deb800fa.png)
+
+### ReturnType = IrregularRock
+
+![示例 返回类型 2D](https://user-images.githubusercontent.com/129722386/231025149-67bcdf66-5ab3-4d0d-a1c3-e8f951a0e45a.png)
+
+### Enable Invert
+
+![示例 反相 2D](https://user-images.githubusercontent.com/129722386/231025199-c0fa750b-e895-4e85-9b81-72651e632e97.png)
 
 ### Disable/Enable Tilable
 
@@ -108,82 +116,112 @@ https://user-images.githubusercontent.com/129722386/231022846-34cda4cb-9b7d-46b3
 
 <br/><br/>
 
-# Unity-Shader-Tutorial-Seamless-2D-3D-Perlin-Noise
+# Unity-Shader-Tutorial-Seamless-2D-3D-Worley-Noise
 
 # Algorithm
 
-### Let's take a look at a 256x256 perlin noise
+### Let's take a look at a 256x256 worley noise
 
-![教程0](https://user-images.githubusercontent.com/129722386/231013417-e5d6fb01-1418-44cc-9aee-6b1f274006e4.png)
+![教程0](https://user-images.githubusercontent.com/129722386/231023240-96ac8575-8f44-48da-8c9a-74f23227943a.png)
 
-### Split it into 16 blocks and 25 vertices
+### Split it into 16 blocks
 
-![教程1](https://user-images.githubusercontent.com/129722386/231013471-b6552a4a-7ac8-411d-a05b-e995c795ea1e.png)
+![教程1](https://user-images.githubusercontent.com/129722386/231023279-b8802462-8e74-4dcb-9e8c-e742c6276c2b.png)
 
-### Assign a random vector to each vertex
+### Draw blocks outside the texture
 
-![教程2](https://user-images.githubusercontent.com/129722386/231013518-ff62fba1-eb66-4193-9391-5f5f6bb04c91.png)
+![教程2](https://user-images.githubusercontent.com/129722386/231023399-7876ff75-d460-4d96-b73d-727e35248773.png)
+
+### Put a random point in each block
+
+![教程3](https://user-images.githubusercontent.com/129722386/231023457-fa5969d5-7159-44cb-b6e2-db6b489435b2.png)
 
 ### All pixels are calculated in the same way, let's take pixel P for example
 
 ### Find out P's block
 
-![教程3](https://user-images.githubusercontent.com/129722386/231013684-1e1ed922-f4f9-4467-98f8-7460e06c582f.png)
+![教程4](https://user-images.githubusercontent.com/129722386/231023489-68e0ce71-64f2-4588-b4cd-a0a6499665a7.png)
 
-### Texture is 256x256, 16 blocks in total, 64x64 for each block
-
-### Find out uv coordinates of P
+### Calculate distances between P ans it's surrounding random points
 
 ```csharp
-float2 uv;
-uv.x = (P.x - A.x) / (64 - 1);
-uv.y = (P.y - A.y) / (64 - 1);
-```
-### a, b, c, d is random vector of Vertex A, B, C, D(green vectors in picture above)
-
-### Calculate 4 dot products
-
-```csharp
-float2 AP = P - A;
-float2 BP = P - B;
-float2 CP = P - C;
-float2 DP = P - D;
-
-AP /= 64;
-BP /= 64;
-CP /= 64;
-DP /= 64;
-
-float dotA = dot(AP , a);
-float dotB = dot(BP , b);
-float dotC = dot(CP , c);
-float dotD = dot(DP , d);
-```
-
-### Use uv coordinates to interpolate them to get perlin noise value
-
-```csharp
-float PerlinNoiseLerp(float l, float r, float t) {
-    t = ((6 * t - 15) * t + 10) * t * t * t;
-    return lerp(l, r, t);
+float GetDistance(float3 pnt0, float3 pnt1) {
+    return distance(pnt0, pnt1);
 }
 
-float temp0 = PerlinNoiseLerp(dotA, dotD, uv.x);
-float temp1 = PerlinNoiseLerp(dotB, dotC, uv.x);
-float noiseValue = PerlinNoiseLerp(temp0, temp1, uv.y);
-noiseValue = (noiseValue + 1.0) / 2.0;
+float distances[9];
+
+distances[0] = GetDistance(P, A);
+distances[1] = GetDistance(P, B);
+distances[2] = GetDistance(P, C);
+distances[3] = GetDistance(P, D);
+distances[4] = GetDistance(P, E);
+distances[5] = GetDistance(P, F);
+distances[6] = GetDistance(P, G);
+distances[7] = GetDistance(P, H);
+distances[8] = GetDistance(P, I);
 ```
-### It's all done!
+
+### Sort the distances we have calculated
+
+```csharp
+float closestDistance = 999999;
+float secondClosestDistance = 999999;
+float thirdClosestDistance = 999999;
+
+for(int iii = 0; iii < 9; iii++) {
+    float tempDistance = distances[iii];
+
+    if(tempDistance < closestDistance ) {
+        thirdClosestDistance = secondClosestDistance ;
+        secondClosestDistance = closestDistance ;
+        closestDistance = tempDistance;
+    }
+    else if(tempDistance < secondClosestDistance ) {
+        thirdClosestDistance = secondClosestDistance ;
+        secondClosestDistance = tempDistance;
+    }
+    else if(tempDistance < thirdClosestDistance ) {
+        thirdClosestDistance = tempDistance;
+    }
+}
+```
+
+### Texture is 256x256, occupy 16 blocks, 64x64 for each block
+
+```csharp
+float noiseValue = closestDistance / 64;
+```
+### It's all done, we have worley noise value for P!
+
+# Variant
+
+### We can change noise style by modify calculation
+
+```csharp
+float GetDistance(float3 pnt0, float3 pnt1) {
+    float3 vec = vec0 - vec1;
+    return abs(vec .x) + abs(vec .y);
+}
+```
+
+![教程6-1](https://user-images.githubusercontent.com/129722386/231024976-5f5ad160-0eaf-4014-8a98-85ba1a449852.png)
+
+```csharp
+float noiseValue = (secondClosestDistance - closestDistance) / 64;
+```
+
+![教程6-2](https://user-images.githubusercontent.com/129722386/231025024-39e8ebdd-237a-4579-a439-e1db2567a355.png)
 
 # Continuity
 
 ### Take P1 and P2 for example
 
-![教程4](https://user-images.githubusercontent.com/129722386/231015654-e59d2483-a286-4153-996f-4e5a5efddc65.png)
+![教程5](https://user-images.githubusercontent.com/129722386/231024257-7f2344ac-c46c-4bb6-8304-192812878832.png)
 
-### UV of P1 is (0, 0.5), uv of P2 is (1, 0.5), noise value of P1 is determined by random vectors of A and B, and noise value of P2 is determined by random vectors of H and G, so as long as thier random vectors are equal, it can connect seamlessly
+### noise value of P1, P2 is determined by it's surrounding random points, so as long as relative positions of random points are equal, it can connect seamlessly
 
-![教程5](https://user-images.githubusercontent.com/129722386/231016877-24e25268-9247-48b4-be30-93421be9af3a.png)
+![教程6](https://user-images.githubusercontent.com/129722386/231024714-8fc4995b-c9ca-4e49-b3d7-2cb37f67302e.png)
 
 # FBM
 
