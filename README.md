@@ -188,7 +188,7 @@ for(int iii = 0; iii < 9; iii++) {
 }
 ```
 
-### Texture is 256x256, occupy 16 blocks, 64x64 for each block
+### Texture is 256x256, 16 blocks were occupied, 64x64 for each block
 
 ```csharp
 float noiseValue = closestDistance / 64;
@@ -220,7 +220,7 @@ float noiseValue = (secondClosestDistance - closestDistance) / 64;
 
 ![教程5](https://user-images.githubusercontent.com/129722386/231024257-7f2344ac-c46c-4bb6-8304-192812878832.png)
 
-### noise value of P1, P2 is determined by it's surrounding random points, so as long as relative positions of random points are equal, it can connect seamlessly
+### noise value of P1, P2 is determined by it's surrounding random points, so as long as relative position of random points are equal, it can connect seamlessly
 
 ![教程6](https://user-images.githubusercontent.com/129722386/231024714-8fc4995b-c9ca-4e49-b3d7-2cb37f67302e.png)
 
