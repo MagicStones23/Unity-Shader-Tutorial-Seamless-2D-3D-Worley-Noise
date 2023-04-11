@@ -225,23 +225,23 @@ float noiseValue = (secondClosestDistance - closestDistance) / 64;
 
 # FBM
 
-### PerlinNoiseA, frequency = 4
+### WorleyNoiseA, frequency = 4
 
-![教程6](https://user-images.githubusercontent.com/129722386/231017200-5ddb29b8-c766-4bd9-846e-1e10013c2f14.png)
+![教程7](https://user-images.githubusercontent.com/129722386/231025385-4762ffc5-dff4-4fea-ae31-518f5690037c.png)
 
-### PerlinNoiseB, frequency = 8
+### WorleyNoiseB, frequency = 8
 
-![教程7](https://user-images.githubusercontent.com/129722386/231017208-b02ef518-d006-4d3b-8ce1-72b2ccc10ac5.png)
+![教程8](https://user-images.githubusercontent.com/129722386/231025395-be306440-0a06-4cf8-b9e1-28ff3d71ceda.png)
 
-### PerlinNoiseC, frequency = 16
+### WorleyNoiseC, frequency = 16
 
-![教程8](https://user-images.githubusercontent.com/129722386/231017213-60d911e1-64e9-4719-9a00-bbaecdba1612.png)
+![教程9](https://user-images.githubusercontent.com/129722386/231025404-7bb60acb-5c5b-44cc-9ce6-01135603933c.png)
 
-### FBM = PerlinNoiseA + PerlinNoiseB * 0.5 + PerlinNoiseC * 0.25 ans so on, endup something like this
+### FBM = WorleyNoiseA + WorleyNoiseB * 0.5 + WorleyNoiseC * 0.25 ans so on, endup something like this
 
-![教程9](https://user-images.githubusercontent.com/129722386/231017530-f96a6d95-d23a-41ed-a08f-0e0da4675298.png)
+![教程10](https://user-images.githubusercontent.com/129722386/231025414-d84309d7-f26f-4866-889f-10f53022f265.png)
 
-### Congratulations, you've learned basic perlin noise!
+### Congratulations, you've learned basic worley noise!
 
 # My Social Media
 
