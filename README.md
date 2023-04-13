@@ -221,7 +221,7 @@ float noiseValue = (secondClosestDistance - closestDistance) / 64;
 
 ![教程5](https://user-images.githubusercontent.com/129722386/231024257-7f2344ac-c46c-4bb6-8304-192812878832.png)
 
-### noise value of P1, P2 is determined by it's surrounding random points, so as long as relative position of random points are equal, it can connect seamlessly
+### noise value of P1, P2 is determined by it's surrounding random points, so as long as relative position of random points are equal, it will connect seamlessly
 
 ![教程6](https://user-images.githubusercontent.com/129722386/231024714-8fc4995b-c9ca-4e49-b3d7-2cb37f67302e.png)
 
