@@ -3,10 +3,11 @@
 * [How to use](#how-to-use)
 * [Main parameter](#main-parameter)
 * [Template](#template)
-* [Algorithm](#algorithm)
-* [Variant](#variant)
-* [Continuity](#continuity)
-* [FBM](#fbm)
+* [Tutorial](#unity-shader-tutorial-seamless-2d-3d-worley-noise)
+  * [Algorithm](#algorithm)
+  * [Variant](#variant)
+  * [Continuity](#continuity)
+  * [FBM](#fbm)
 * [My Social Media](#my-social-media)
 
 # How to use
